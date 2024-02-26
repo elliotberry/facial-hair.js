@@ -23,8 +23,8 @@ const clearCache = function() {
  * array of tokens it contains. Doing this ahead of time avoids the need to
  * parse templates on the fly as they are rendered.
  */
-const parse = function(template, tags) {
-  return defaultWriter.parse(template, tags);
+const parse = function(template, options={useEscape: true}) {
+  return defaultWriter.parse(template, options);
 };
 
 /**

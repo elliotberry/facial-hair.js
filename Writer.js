@@ -11,6 +11,11 @@ import {parseTemplate} from './parseTemplate.js';
  */
 export class Writer {
   constructor() {
+    this.config = {
+      escape: escapeHTML,
+      tags: tagz,
+    };
+  
     this.templateCache = {
       _cache: {},
       set: function set(key, value) {
@@ -39,8 +44,9 @@ export class Writer {
    * `mustache.tags` if `tags` is omitted,  and returns the array of tokens
    * that is generated from the parse.
    */
-  parse(template) {
-    let tags = this.getConfigTags();
+  parse(template, options) {
+    this.parseConfig(options);
+    let tags = this.config.tags;
     const cache = this.templateCache;
     const cacheKey = `${template}:${tags.join(':')}`;
     const isCacheEnabled = typeof cache !== 'undefined';
@@ -76,11 +82,25 @@ export class Writer {
    * If an `escape` function is not provided, then an HTML-safe string
    * escaping function is used as the default.
    */
+  parseConfig(config) {
+    if (config == undefined) return;
+    if (config.tags) {
+      this.tags = config.tags;
+    }
+    if (config.useEscape === false) {
+      this.config.escape = function (value) {
+        return value;
+      };
+    }
+  }
+
   render(template, view, partials, config) {
-    const tags = this.getConfigTags(config);
+  
+    this.parseConfig(config);
+    const tags = this.config.tags;
     const tokens = this.parse(template, tags);
     const context = view instanceof Context ? view : new Context(view, undefined);
-    return this.renderTokens(tokens, context, partials, template, config);
+    return this.renderTokens(tokens, context, partials, template);
   }
 
   /**
@@ -92,7 +112,7 @@ export class Writer {
    * If the template doesn't use higher-order sections, this argument may
    * be omitted.
    */
-  renderTokens(tokens, context, partials, originalTemplate, config) {
+  renderTokens(tokens, context, partials, originalTemplate) {
     let buffer = '';
 
     let token;
@@ -103,11 +123,11 @@ export class Writer {
       token = tokens[i];
       symbol = token[0];
 
-      if (symbol === '#') value = this.renderSection(token, context, partials, originalTemplate, config);
-      else if (symbol === '^') value = this.renderInverted(token, context, partials, originalTemplate, config);
-      else if (symbol === '>') value = this.renderPartial(token, context, partials, config);
+      if (symbol === '#') value = this.renderSection(token, context, partials, originalTemplate);
+      else if (symbol === '^') value = this.renderInverted(token, context, partials, originalTemplate);
+      else if (symbol === '>') value = this.renderPartial(token, context, partials);
       else if (symbol === '&') value = this.unescapedValue(token, context);
-      else if (symbol === 'name') value = this.escapedValue(token, context, config);
+      else if (symbol === 'name') value = this.escapedValue(token, context);
       else if (symbol === 'text') value = this.rawValue(token);
 
       if (value !== undefined) buffer += value;
@@ -116,7 +136,7 @@ export class Writer {
     return buffer;
   }
 
-  renderSection(token, context, partials, originalTemplate, config) {
+  renderSection(token, context, partials, originalTemplate) {
     const self = this;
     let buffer = '';
     let value = context.lookup(token[1]);
@@ -124,17 +144,17 @@ export class Writer {
     // This function is used to render an arbitrary template
     // in the current context by higher-order sections.
     function subRender(template) {
-      return self.render(template, context, partials, config);
+      return self.render(template, context, partials);
     }
 
     if (!value) return;
 
     if (isArray(value)) {
       for (let j = 0, valueLength = value.length; j < valueLength; ++j) {
-        buffer += this.renderTokens(token[4], context.push(value[j]), partials, originalTemplate, config);
+        buffer += this.renderTokens(token[4], context.push(value[j]), partials, originalTemplate);
       }
     } else if (typeof value === 'object' || typeof value === 'string' || typeof value === 'number') {
-      buffer += this.renderTokens(token[4], context.push(value), partials, originalTemplate, config);
+      buffer += this.renderTokens(token[4], context.push(value), partials, originalTemplate);
     } else if (isFunction(value)) {
       if (typeof originalTemplate !== 'string') throw new Error('Cannot use higher-order sections without the original template');
 
@@ -143,17 +163,17 @@ export class Writer {
 
       if (value != null) buffer += value;
     } else {
-      buffer += this.renderTokens(token[4], context, partials, originalTemplate, config);
+      buffer += this.renderTokens(token[4], context, partials, originalTemplate);
     }
     return buffer;
   }
 
-  renderInverted(token, context, partials, originalTemplate, config) {
+  renderInverted(token, context, partials, originalTemplate) {
     const value = context.lookup(token[1]);
 
     // Use JavaScript's definition of falsy. Include empty arrays.
     // See https://github.com/janl/mustache.js/issues/186
-    if (!value || (isArray(value) && value.length === 0)) return this.renderTokens(token[4], context, partials, originalTemplate, config);
+    if (!value || (isArray(value) && value.length === 0)) return this.renderTokens(token[4], context, partials, originalTemplate);
   }
 
   indentPartial(partial, indentation, lineHasNonSpace) {
@@ -167,9 +187,9 @@ export class Writer {
     return partialByNl.join('\n');
   }
 
-  renderPartial(token, context, partials, config) {
+  renderPartial(token, context, partials) {
     if (!partials) return;
-    const tags = this.getConfigTags(config);
+    const tags = this.config.tags;
 
     const value = isFunction(partials) ? partials(token[1]) : partials[token[1]];
     if (value != null) {
@@ -181,7 +201,7 @@ export class Writer {
         indentedValue = this.indentPartial(value, indentation, lineHasNonSpace);
       }
       const tokens = this.parse(indentedValue, tags);
-      return this.renderTokens(tokens, context, partials, indentedValue, config);
+      return this.renderTokens(tokens, context, partials, indentedValue);
     }
   }
 
@@ -190,8 +210,8 @@ export class Writer {
     if (value != null) return value;
   }
 
-  escapedValue(token, context, config) {
-    const escape = this.getConfigEscape(config) || escapeHTML;
+  escapedValue(token, context) {
+    const escape = this.config.escape;
     const value = context.lookup(token[1]);
     if (value != null) return typeof value === 'number' && escape === escapeHTML ? String(value) : escape(value);
   }
@@ -199,17 +219,6 @@ export class Writer {
   rawValue(token) {
     return token[1];
   }
-  getConfig() {
-    return {
-      tags: tagz,
-      escape: escapeHTML,
-    };
-  }
-  getConfigTags() {
-    return this.getConfig().tags;
-  }
+ 
 
-  getConfigEscape(config) {
-    this.getConfig().escape;
-  }
 }
