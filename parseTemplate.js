@@ -1,7 +1,6 @@
 import { Scanner } from "./Scanner.js";
 import { nestTokens } from "./nestTokens.js";
 import { squashTokens } from "./squashTokens.js";
-import { tags } from "./index.js";
 import { spaceRe, isArray, escapeRegExp, isWhitespace, tagRe, whiteRe, equalsRe, curlyRe } from "./typeStr.js";
 
 /**

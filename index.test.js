@@ -1,5 +1,5 @@
 import assert from 'assert';
-import mustache from './index.js';
+import {render} from './index.js';
 import {describe, it} from 'node:test'  
 
 describe('Mustache Template System', () => {
@@ -13,7 +13,7 @@ describe('Mustache Template System', () => {
     };
   
     const template = "{{#musketeers}}{{.}}, {{/musketeers}}";
-    const output = mustache.render(template, view);
+    const output = render(template, view);
     assert.equal(output, "Athos, Aramis, Porthos, D'Artagnan, ");
   });
   it('should iterate over arrays with objects', () => {
@@ -27,7 +27,7 @@ describe('Mustache Template System', () => {
     };
   
     const template = "{{#musketeers}}{{name}}, {{/musketeers}}";
-    const output = mustache.render(template, view);
+    const output = render(template, view);
     assert.equal(output, "Athos, Aramis, Porthos, D'Artagnan, ");
   });
   it('should iterate over arrays with objects and nested properties', () => {
@@ -41,7 +41,7 @@ describe('Mustache Template System', () => {
     };
   
     const template = "{{#musketeers}}{{#isLeader}}{{name}}{{/isLeader}}{{/musketeers}}";
-    const output = mustache.render(template, view);
+    const output = render(template, view);
     assert.equal(output, "Athos");
   });
 
@@ -56,7 +56,7 @@ describe('Mustache Template System', () => {
     };
   
     const template = "{{#musketeers}}{{#isLeader}}{{name}}{{^isLeader}}No leaders found{{/isLeader}}{{/musketeers}}";
-    const output = mustache.render(template, view);
+    const output = render(template, view);
     assert.equal(output, "Athos");
   } );
   it('should allow for comments', () => {
@@ -70,7 +70,7 @@ describe('Mustache Template System', () => {
     };
   
     const template = "{{! This is a comment }}";
-    const output = mustache.render(template, view);
+    const output = render(template, view);
     assert.equal(output, "");
   } );
 

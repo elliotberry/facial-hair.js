@@ -3,12 +3,9 @@
  * http://github.com/janl/mustache.js
  */
 
-import { Context } from "./Context.js";
-import { Scanner } from "./Scanner.js";
-import { Writer } from "./Writer.js";
-import { typeStr, escapeHtml } from "./typeStr.js";
 
-var tags = [ '{{', '}}' ];
+import { Writer } from "./Writer.js";
+import { typeStr } from "./typeStr.js";
 
 // All high-level mustache.* functions use this writer.
 var defaultWriter = new Writer();
@@ -43,4 +40,4 @@ const render = function(template, view, partials, config) {
 };
 
 
-export {Scanner, Context, Writer, escapeHtml, typeStr, render, parse, clearCache, tags};
+export {render, parse};

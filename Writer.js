@@ -1,7 +1,8 @@
-import { Context } from "./Context.js";
-import { escape, tags } from "./index.js";
-import { isArray, isFunction } from "./typeStr.js";
-import { parseTemplate } from "./parseTemplate.js";
+import {Context} from './Context.js';
+import {escapeHtml as escapeHTML} from './typeStr.js';
+import tagz from './tags.js';
+import {isArray, isFunction} from './typeStr.js';
+import {parseTemplate} from './parseTemplate.js';
 
 /**
  * A Writer knows how to take a stream of tokens and render them to a
@@ -20,7 +21,7 @@ export class Writer {
       },
       clear: function clear() {
         this._cache = {};
-      }
+      },
     };
   }
 
@@ -38,9 +39,10 @@ export class Writer {
    * `mustache.tags` if `tags` is omitted,  and returns the array of tokens
    * that is generated from the parse.
    */
-  parse(template, tags) {
+  parse(template) {
+    let tags = this.getConfigTags();
     const cache = this.templateCache;
-    const cacheKey = `${template}:${(tags).join(':')}`;
+    const cacheKey = `${template}:${tags.join(':')}`;
     const isCacheEnabled = typeof cache !== 'undefined';
     let tokens = isCacheEnabled ? cache.get(cacheKey) : undefined;
 
@@ -77,7 +79,7 @@ export class Writer {
   render(template, view, partials, config) {
     const tags = this.getConfigTags(config);
     const tokens = this.parse(template, tags);
-    const context = (view instanceof Context) ? view : new Context(view, undefined);
+    const context = view instanceof Context ? view : new Context(view, undefined);
     return this.renderTokens(tokens, context, partials, template, config);
   }
 
@@ -108,8 +110,7 @@ export class Writer {
       else if (symbol === 'name') value = this.escapedValue(token, context, config);
       else if (symbol === 'text') value = this.rawValue(token);
 
-      if (value !== undefined)
-        buffer += value;
+      if (value !== undefined) buffer += value;
     }
 
     return buffer;
@@ -135,14 +136,12 @@ export class Writer {
     } else if (typeof value === 'object' || typeof value === 'string' || typeof value === 'number') {
       buffer += this.renderTokens(token[4], context.push(value), partials, originalTemplate, config);
     } else if (isFunction(value)) {
-      if (typeof originalTemplate !== 'string')
-        throw new Error('Cannot use higher-order sections without the original template');
+      if (typeof originalTemplate !== 'string') throw new Error('Cannot use higher-order sections without the original template');
 
       // Extract the portion of the original template that the section contains.
       value = value.call(context.view, originalTemplate.slice(token[3], token[5]), subRender);
 
-      if (value != null)
-        buffer += value;
+      if (value != null) buffer += value;
     } else {
       buffer += this.renderTokens(token[4], context, partials, originalTemplate, config);
     }
@@ -154,8 +153,7 @@ export class Writer {
 
     // Use JavaScript's definition of falsy. Include empty arrays.
     // See https://github.com/janl/mustache.js/issues/186
-    if (!value || (isArray(value) && value.length === 0))
-      return this.renderTokens(token[4], context, partials, originalTemplate, config);
+    if (!value || (isArray(value) && value.length === 0)) return this.renderTokens(token[4], context, partials, originalTemplate, config);
   }
 
   indentPartial(partial, indentation, lineHasNonSpace) {
@@ -189,39 +187,29 @@ export class Writer {
 
   unescapedValue(token, context) {
     const value = context.lookup(token[1]);
-    if (value != null)
-      return value;
+    if (value != null) return value;
   }
 
   escapedValue(token, context, config) {
-    const escape = this.getConfigEscape(config) || escape;
+    const escape = this.getConfigEscape(config) || escapeHTML;
     const value = context.lookup(token[1]);
-    if (value != null)
-      return (typeof value === 'number' && escape === escape) ? String(value) : escape(value);
+    if (value != null) return typeof value === 'number' && escape === escapeHTML ? String(value) : escape(value);
   }
 
   rawValue(token) {
     return token[1];
   }
-
-  getConfigTags(config) {
-    if (isArray(config)) {
-      return config;
-    }
-    else if (config && typeof config === 'object') {
-      return config.tags;
-    }
-    else {
-      return undefined;
-    }
+  getConfig() {
+    return {
+      tags: tagz,
+      escape: escapeHTML,
+    };
+  }
+  getConfigTags() {
+    return this.getConfig().tags;
   }
 
   getConfigEscape(config) {
-    if (config && typeof config === 'object' && !isArray(config)) {
-      return config.escape;
-    }
-    else {
-      return undefined;
-    }
+    this.getConfig().escape;
   }
 }
