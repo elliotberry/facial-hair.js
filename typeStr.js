@@ -58,6 +58,7 @@ const entityMap = {
   '`': '&#x60;',
   '=': '&#x3D;'
 };
+
 export function escapeHtml(string) {
   return String(string).replace(/[&<>"'`=\/]/g, function fromEntityMap(s) {
     return entityMap[s];

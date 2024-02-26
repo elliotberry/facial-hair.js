@@ -1,7 +1,7 @@
 import { Scanner } from "./Scanner.js";
 import { nestTokens } from "./nestTokens.js";
 import { squashTokens } from "./squashTokens.js";
-import { mustache } from "./mustache.js";
+import { tags } from "./index.js";
 import { spaceRe, isArray, escapeRegExp, isWhitespace, tagRe, whiteRe, equalsRe, curlyRe } from "./typeStr.js";
 
 /**
@@ -74,7 +74,7 @@ export function parseTemplate(template, tags) {
     closingCurlyRe = new RegExp(`\\s*${escapeRegExp(`}${tagsToCompile[1]}`)}`);
   }
 
-  compileTags(tags || mustache.tags);
+  compileTags(tags);
 
   const scanner = new Scanner(template);
 

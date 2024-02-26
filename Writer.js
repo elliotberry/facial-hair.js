@@ -1,5 +1,5 @@
 import { Context } from "./Context.js";
-import { mustache } from "./mustache.js";
+import { escape, tags } from "./index.js";
 import { isArray, isFunction } from "./typeStr.js";
 import { parseTemplate } from "./parseTemplate.js";
 
@@ -40,7 +40,7 @@ export class Writer {
    */
   parse(template, tags) {
     const cache = this.templateCache;
-    const cacheKey = `${template}:${(tags || mustache.tags).join(':')}`;
+    const cacheKey = `${template}:${(tags).join(':')}`;
     const isCacheEnabled = typeof cache !== 'undefined';
     let tokens = isCacheEnabled ? cache.get(cacheKey) : undefined;
 
@@ -194,10 +194,10 @@ export class Writer {
   }
 
   escapedValue(token, context, config) {
-    const escape = this.getConfigEscape(config) || mustache.escape;
+    const escape = this.getConfigEscape(config) || escape;
     const value = context.lookup(token[1]);
     if (value != null)
-      return (typeof value === 'number' && escape === mustache.escape) ? String(value) : escape(value);
+      return (typeof value === 'number' && escape === escape) ? String(value) : escape(value);
   }
 
   rawValue(token) {

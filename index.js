@@ -8,31 +8,7 @@ import { Scanner } from "./Scanner.js";
 import { Writer } from "./Writer.js";
 import { typeStr, escapeHtml } from "./typeStr.js";
 
-export var mustache = {
-
-  tags: [ '{{', '}}' ],
-  clearCache: undefined,
-  escape: undefined,
-  parse: undefined,
-  render: undefined,
-  Scanner: undefined,
-  Context: undefined,
-  Writer: undefined,
-  /**
-   * Allows a user to override the default caching strategy, by providing an
-   * object with set, get and clear methods. This can also be used to disable
-   * the cache by setting it to the literal `undefined`.
-   */
-  set templateCache(cache) {
-    defaultWriter.templateCache = cache;
-  },
-  /**
-   * Gets the default or overridden caching object from the default writer.
-   */
-  get templateCache() {
-    return defaultWriter.templateCache;
-  }
-};
+var tags = [ '{{', '}}' ];
 
 // All high-level mustache.* functions use this writer.
 var defaultWriter = new Writer();
@@ -43,7 +19,7 @@ var defaultWriter = new Writer();
 const clearCache = function() {
   return defaultWriter.clearCache();
 };
-mustache.clearCache = clearCache;
+
 
 /**
  * Parses and caches the given template in the default writer and returns the
@@ -53,7 +29,7 @@ mustache.clearCache = clearCache;
 const parse = function(template, tags) {
   return defaultWriter.parse(template, tags);
 };
-mustache.parse = parse;
+
 /**
  * Renders the `template` with the given `view`, `partials`, and `config`
  * using the default writer.
@@ -65,14 +41,6 @@ const render = function(template, view, partials, config) {
 
   return defaultWriter.render(template, view, partials, config);
 };
-mustache.render = render;
-// Export the escaping function so that the user may override it.
-// See https://github.com/janl/mustache.js/issues/244
-mustache.escape = escapeHtml;
 
-// Export these mainly for testing, but also for advanced usage.
-mustache.Scanner = Scanner;
-mustache.Context = Context;
-mustache.Writer = Writer;
 
-export default mustache;
+export {Scanner, Context, Writer, escapeHtml, typeStr, render, parse, clearCache, tags};

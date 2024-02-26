@@ -1,4 +1,4 @@
-import { hasProperty, primitiveHasOwnProperty, isFunction } from "./typeStr";
+import { hasProperty, primitiveHasOwnProperty, isFunction } from "./typeStr.js";
 
 /**
  * Represents a rendering context by wrapping a view object and
