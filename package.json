@@ -1,7 +1,7 @@
 {
-  "name": "mustache-redux",
+  "name": "facial-hair.js",
   "version": "4.2.0",
-  "description": "{{mustache}} templates, i guess",
+  "description": "Minimal templating with {{facial hair}} in Node",
   "author": "mustache.js Authors <http://github.com/janl/mustache.js>",
   "homepage": "https://github.com/janl/mustache.js",
   "main": "./index.js",
