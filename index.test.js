@@ -10,7 +10,7 @@ describe('Mustache Template System', () => {
 
     const template = '{{#musketeers}}{{.}}, {{/musketeers}}';
     const output = render(template, view, [], {useEscape: false});
-    assert.equal(output, "Athos, Aramis, Porthos, D&#39;Artagnan, ");
+    assert.equal(output.trim(), "Athos, Aramis, Porthos, D'Artagnan,");
   });
   it('renders a template with a non-empty list (section)', async t => {
     const template = '{{#users}}* {{name}}\n{{/users}}';
@@ -47,7 +47,7 @@ describe('Mustache Template System', () => {
     * {{.}}
     {{/musketeers}}`;
     const output = render(template, view, [], {useEscape: false});
-    assert.equal(output, `    * Athos\n    * Aramis\n    * Porthos\n    * D&#39;Artagnan\n`);
+    assert.equal(output, `    * Athos\n    * Aramis\n    * Porthos\n    * D'Artagnan\n`);
   });
   
   it('should allow for comments', () => {
@@ -63,5 +63,106 @@ describe('Mustache Template System', () => {
     const template = '{{! This is a comment }}';
     const output = render(template, view, [], {useEscape: false});
     assert.equal(output.trim(), '');
+  });
+  it('should allow for js dot notation', () => {
+    const view = {
+      "name": {
+        "first": "Karl",
+        "last": "Marx"
+      },
+      "age": "RIP"
+    }
+
+    const template = `* {{name.first}} {{name.last}} * {{age}}`;
+    const output = render(template, view, [], {useEscape: false});
+    assert.equal(output.trim(), '* Karl Marx * RIP');
+  });
+  it('should do sections', () => {
+    const view = {
+      "person": false
+    }
+
+    const template = `Shown.
+    {{#person}}
+    Never shown!
+    {{/person}}`;
+    const output = render(template, view, [], {useEscape: false});
+    assert.equal(output.trim(), 'Shown.');
+  });
+  it('should do non-empty lists', () => {
+    const view = {
+      "stooges": [
+        { "name": "Moe" },
+        { "name": "Larry" },
+        { "name": "Curly" }
+      ]
+    }
+
+    const template = `{{#stooges}}
+    <b>{{name}}</b>
+    {{/stooges}}`;
+    const output = render(template, view, [], {useEscape: false});
+    assert.equal(output.trim(), `<b>Moe</b>
+    <b>Larry</b>
+    <b>Curly</b>`);
+  });
+  it('If the value of a section variable is a function, it will be called in the context of the current item in the list on each iteration.' , () => {
+    const view = {
+      "beatles": [
+        { "firstName": "John", "lastName": "Lennon" },
+        { "firstName": "Paul", "lastName": "McCartney" },
+        { "firstName": "George", "lastName": "Harrison" },
+        { "firstName": "Ringo", "lastName": "Starr" }
+      ],
+      "name": function () {
+        return this.firstName + " " + this.lastName;
+      }
+    }
+
+    const template = `{{#beatles}}
+    * {{name}}
+    {{/beatles}}`;
+    const output = render(template, view, [], {useEscape: false});
+    assert.equal(output.trim(), `* John Lennon
+    * Paul McCartney
+    * George Harrison
+    * Ringo Starr`);
+  });
+  it('should do inverted sections', () => {
+    const view = {
+      "stooges": []
+    }
+
+    const template = `{{#stooges}}
+    <b>{{name}}</b>
+    {{/stooges}}
+    {{^stooges}}
+    No stooges!
+    {{/stooges}}`;
+    const output = render(template, view, [], {useEscape: false});
+    assert.equal(output.trim(), 'No stooges!');
+  });
+  it('should do comments', () => {
+    const view = {
+      "stooges": []
+    }
+
+    const template = `{{! ignore me }}`;
+    const output = render(template, view, [], {useEscape: false});
+    assert.equal(output.trim(), '');
+  });
+
+  it('should do partials', () => {
+    const view = {
+      "name": "Tater",
+      "part": "Hello, {{> dude}}!"
+    }
+
+    const template = `{{> part}}`;
+    const partials = {
+      "dude": "Mr. {{name}}"
+    }
+    const output = render(template, view, partials, {useEscape: false});
+    assert.equal(output.trim(), 'Hello, Mr. Tater!');
   });
 });

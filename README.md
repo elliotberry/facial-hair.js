@@ -1,43 +1,13 @@
 # mustache.js - Logic-less {{mustache}} templates with JavaScript
 
-> What could be more logical awesome than no logic at all?
-
-[![Build Status](https://travis-ci.org/janl/mustache.js.svg?branch=master)](https://travis-ci.org/janl/mustache.js)
-
-[mustache.js](http://github.com/janl/mustache.js) is a zero-dependency implementation of the [mustache](http://mustache.github.io/) template system in JavaScript.
-
-[Mustache](http://mustache.github.io/) is a logic-less template syntax. It can be used for HTML, config files, source code - anything. It works by expanding tags in a template using values provided in a hash or object.
-
-We call it "logic-less" because there are no if statements, else clauses, or for loops. Instead there are only tags. Some tags are replaced with a value, some nothing, and others a series of values.
-
-For a language-agnostic overview of mustache's template syntax, see the `mustache(5)` [manpage](http://mustache.github.io/mustache.5.html).
-
-## Where to use mustache.js?
-
-You can use mustache.js to render mustache templates anywhere you can use JavaScript. This includes web browsers, server-side environments such as [Node.js](http://nodejs.org/), and [CouchDB](http://couchdb.apache.org/) views.
-
-mustache.js ships with support for the [CommonJS](http://www.commonjs.org/) module API, the [Asynchronous Module Definition](https://github.com/amdjs/amdjs-api/wiki/AMD) API (AMD) and [ECMAScript modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules).
-
-In addition to being a package to be used programmatically, you can use it as a [command line tool](#command-line-tool).
-
-And this will be your templates after you use Mustache:
-
-!['stache](https://cloud.githubusercontent.com/assets/288977/8779228/a3cf700e-2f02-11e5-869a-300312fb7a00.gif)
-
-## Install
-
-You can get Mustache via [npm](http://npmjs.com).
-
-```bash
-$ npm install mustache --save
-```
+ a zero-dependency implementation of the [mustache](http://mustache.github.io/) template system in Node.
 
 ## Usage
 
 Below is a quick example how to use mustache.js:
 
 ```js
-const Mustache = require('mustache');
+import mustache from "mustache"
 
 const view = {
   title: "Joe",
@@ -47,56 +17,7 @@ const view = {
 const output = Mustache.render("{{title}} spends {{calc}}", view);
 ```
 
-In this example, the `Mustache.render` function takes two parameters: 1) the [mustache](http://mustache.github.io/) template and 2) a `view` object that contains the data and code needed to render the template.
-
-## Templates
-
-A [mustache](http://mustache.github.io/) template is a string that contains any number of mustache tags. Tags are indicated by the double mustaches that surround them. `{{person}}` is a tag, as is `{{#person}}`. In both examples we refer to `person` as the tag's key. There are several types of tags available in mustache.js, described below.
-
-There are several techniques that can be used to load templates and hand them to mustache.js, here are two of them:
-
-#### Include Templates
-
-If you need a template for a dynamic part in a static website, you can consider including the template in the static HTML file to avoid loading templates separately. Here's a small example:
-
-```js
-// file: render.js
-
-function renderHello() {
-  const template = document.getElementById('template').innerHTML;
-  const rendered = Mustache.render(template, { name: 'Luke' });
-  document.getElementById('target').innerHTML = rendered;
-}
-```
-
-```html
-<html>
-  <body onload="renderHello()">
-    <div id="target">Loading...</div>
-    <script id="template" type="x-tmpl-mustache">
-      Hello {{ name }}!
-    </script>
-
-    <script src="https://unpkg.com/mustache@latest"></script>
-    <script src="render.js"></script>
-  </body>
-</html>
-```
-
-#### Load External Templates
-
-If your templates reside in individual files, you can load them asynchronously and render them when they arrive. Another example using [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch):
-
-```js
-function renderHello() {
-  fetch('template.mustache')
-    .then((response) => response.text())
-    .then((template) => {
-      const rendered = Mustache.render(template, { name: 'Luke' });
-      document.getElementById('target').innerHTML = rendered;    
-    });
-}
-```
+In this example, the `Mustache.render` function takes two parameters: 1) the template and 2) a `view` object that contains the data and code needed to render the template.
 
 ### Variables
 

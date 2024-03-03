@@ -1,14 +1,10 @@
 {
-  "name": "mustache",
+  "name": "mustache-redux",
   "version": "4.2.0",
-  "description": "Logic-less {{mustache}} templates with JavaScript",
+  "description": "{{mustache}} templates, i guess",
   "author": "mustache.js Authors <http://github.com/janl/mustache.js>",
   "homepage": "https://github.com/janl/mustache.js",
-
   "main": "./index.js",
-
-"type": "module",
-
-
+  "type": "module",
   "license": "MIT"
 }
