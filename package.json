@@ -1,8 +1,8 @@
 {
   "name": "facial-hair.js",
-  "version": "4.2.0",
+  "version": "0.0.6",
   "engines": {
-    "node": ">=18",
+    "node": ">=18"
   },
   "keywords": ["masculinty", "beards", "mustaches", "templating", "logicless", "handlebars", "dust", "eco", "ejs", "underscore", "hentai"],
   "description": "Minimal templating with {{facial hair}} in Node",
