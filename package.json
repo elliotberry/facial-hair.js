@@ -1,10 +1,25 @@
 {
   "name": "facial-hair.js",
   "version": "4.2.0",
+  "engines": {
+    "node": ">=18",
+  },
+  "keywords": ["masculinty", "beards", "mustaches", "templating", "logicless", "handlebars", "dust", "eco", "ejs", "underscore", "hentai"],
   "description": "Minimal templating with {{facial hair}} in Node",
   "author": "mustache.js Authors <http://github.com/janl/mustache.js>",
   "homepage": "https://github.com/janl/mustache.js",
   "main": "./index.js",
-  "type": "module",
-  "license": "MIT"
+  "contributors": [
+    "me"
+  ],
+  "files": ["index.js", "index.test.js", "./lib/**/*"],
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com:elliotberry/facial-hair.js.git"
+  },
+  "license": "The Unlicense"
 }
