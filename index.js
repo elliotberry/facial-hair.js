@@ -1,12 +1,7 @@
-import { Writer } from "./lib/Writer.js";
-import { typeStr } from "./lib/typeStr.js";
-
+import { typeStr as typeString } from "./lib/type-str.js";
+import { Writer } from "./lib/writer.js";
 
 const defaultWriter = new Writer();
-
-const clearCache = () => {
-  return defaultWriter.clearCache();
-};
 
 /**
  * Parses and caches the given template in the default writer and returns the
@@ -24,11 +19,11 @@ const parse = (template, options={useEscape: true}) => {
 const render = (template, view, partials, config) => {
   
   if (typeof template !== 'string') {
-    throw new TypeError(`Invalid template! Template should be a "string" but "${typeStr(template)}" was given as the first argument for mustache#render(template, view, partials)`);
+    throw new TypeError(`Invalid template! Template should be a "string" but "${typeString(template)}" was given as the first argument for mustache#render(template, view, partials)`);
   }
 
   return defaultWriter.render(template, view, partials, config);
 };
 
 
-export {render, parse};
+export {parse,render};
