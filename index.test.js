@@ -146,16 +146,15 @@ describe('Mustache Template System', () => {
     const output = render(template, view, [], {useEscape: false});
     assert.equal(output.trim(), '');
   });
-it('doesn\'t fuck up non-westrn characters', () => {
-  
-const view = {era: "令和"}
+  it("doesn't fuck up non-westrn characters", () => {
+    const view = {era: '令和'};
 
-const template = "<japan>{{era}}</japan>😀"
+    const template = '<japan>{{era}}</japan>😀 swag swag {{era}} {{era}} ℅ ℋ ඇඇඇ';
 
-
-  const output = render(template, view);
-  assert.equal(output.trim(), '<japan>令和</japan>😀');
-})
+    const output = render(template, view);
+    console.log(output)
+    assert.equal(output.trim(), '<japan>令和</japan>😀 swag swag 令和 令和 ℅ ℋ ඇඇඇ');
+  });
   /*
   it('should do partials', () => {
     const view = {
