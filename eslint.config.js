@@ -1,14 +1,14 @@
 import js from '@eslint/js'
 import noSecrets from 'eslint-plugin-no-secrets'
 import packageJson from "eslint-plugin-package-json/configs/recommended";
-import perfectionistNatural from 'eslint-plugin-perfectionist/configs/recommended-natural'
+import perfectionist from 'eslint-plugin-perfectionist'
 import pluginSecurity from 'eslint-plugin-security'
 import is from 'eslint-plugin-simple-import-sort'
 import sonarjs from "eslint-plugin-sonarjs";
 import eslintPluginUnicorn from 'eslint-plugin-unicorn'
 export default [
     eslintPluginUnicorn.configs['flat/recommended'],
-    perfectionistNatural,
+   
     js.configs.recommended,
     pluginSecurity.configs.recommended,
     sonarjs.configs.recommended,
@@ -29,6 +29,7 @@ export default [
         },
         plugins: {
             'no-secrets': noSecrets,
+            perfectionist,
             'simple-import-sort': is
         },
 
@@ -37,7 +38,6 @@ export default [
             'no-secrets/no-secrets': 'error',
             'no-unused-vars': 'warn',
             'perfectionist/sort-array-includes': 'warn',
-            'perfectionist/sort-astro-attributes': 'warn',
             'perfectionist/sort-classes': 'warn',
             'perfectionist/sort-enums': 'warn',
             'perfectionist/sort-exports': 'warn',

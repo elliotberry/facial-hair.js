@@ -1,4 +1,5 @@
 ![](./mustache.jpg)
+
 # mustache.js - Logic-less {{mustache}} templates with JavaScript
 
 a zero-dependency implementation of the [mustache](http://mustache.github.io/) template system in Node. This was almost entirely done by other people, I just refactored it.
@@ -253,7 +254,7 @@ Output:
 
 ### Inverted Sections
 
-An inverted section opens with `{{^section}}` instead of `{{#section}}`. The block of an inverted section is rendered only if the value of that section's tag is `null`, `undefined`, `false`, *falsy* or an empty list.
+An inverted section opens with `{{^section}}` instead of `{{#section}}`. The block of an inverted section is rendered only if the value of that section's tag is `null`, `undefined`, `false`, _falsy_ or an empty list.
 
 View:
 
@@ -312,7 +313,6 @@ Mustache requires only this:
 
 Why? Because the `next_more.mustache` file will inherit the `size` and `start` variables from the calling context. In this way you may want to think of partials as includes, imports, template expansion, nested templates, or subtemplates, even though those aren't literally the case here.
 
-
 For example, this template and partial:
 
     base.mustache:
@@ -354,11 +354,13 @@ const customTags = [ '<%', '%>' ];
 ```
 
 ##### Pass Value into Render Method
+
 ```js
 Mustache.render(template, view, {}, customTags);
 ```
 
 ##### Override Tags Property
+
 ```js
 Mustache.tags = customTags;
 // Subsequent parse() and render() calls will use customTags
@@ -400,21 +402,21 @@ Mustache.render(template, view);
 mustache.js is shipped with a Node.js based command line tool. It might be installed as a global tool on your computer to render a mustache template of some kind
 
 ```bash
-$ npm install -g mustache
+npm install -g mustache
 
-$ mustache dataView.json myTemplate.mustache > output.html
+mustache dataView.json myTemplate.mustache > output.html
 ```
 
 also supports stdin.
 
 ```bash
-$ cat dataView.json | mustache - myTemplate.mustache > output.html
+cat dataView.json | mustache - myTemplate.mustache > output.html
 ```
 
 or as a package.json `devDependency` in a build process maybe?
 
 ```bash
-$ npm install mustache --save-dev
+npm install mustache --save-dev
 ```
 
 ```json
@@ -424,8 +426,9 @@ $ npm install mustache --save-dev
   }
 }
 ```
+
 ```bash
-$ npm run build
+npm run build
 ```
 
 The command line tool is basically a wrapper around `Mustache.render` so you get all the features.
@@ -433,26 +436,27 @@ The command line tool is basically a wrapper around `Mustache.render` so you get
 If your templates use partials you should pass paths to partials using `-p` flag:
 
 ```bash
-$ mustache -p path/to/partial1.mustache -p path/to/partial2.mustache dataView.json myTemplate.mustache
+mustache -p path/to/partial1.mustache -p path/to/partial2.mustache dataView.json myTemplate.mustache
 ```
 
 ## Plugins for JavaScript Libraries
 
 mustache.js may be built specifically for several different client libraries, including the following:
 
-  - [jQuery](http://jquery.com/)
-  - [MooTools](http://mootools.net/)
-  - [Dojo](http://www.dojotoolkit.org/)
-  - [YUI](http://developer.yahoo.com/yui/)
-  - [qooxdoo](http://qooxdoo.org/)
+- [jQuery](http://jquery.com/)
+- [MooTools](http://mootools.net/)
+- [Dojo](http://www.dojotoolkit.org/)
+- [YUI](http://developer.yahoo.com/yui/)
+- [qooxdoo](http://qooxdoo.org/)
 
 These may be built using [Rake](http://rake.rubyforge.org/) and one of the following commands:
+
 ```bash
-$ rake jquery
-$ rake mootools
-$ rake dojo
-$ rake yui3
-$ rake qooxdoo
+rake jquery
+rake mootools
+rake dojo
+rake yui3
+rake qooxdoo
 ```
 
 ## TypeScript
@@ -465,18 +469,24 @@ by having type definitions available via [@types/mustache](https://www.npmjs.com
 In order to run the tests you'll need to install [Node.js](http://nodejs.org/).
 
 You also need to install the sub module containing [Mustache specifications](http://github.com/mustache/spec) in the project root.
+
 ```bash
-$ git submodule init
-$ git submodule update
+git submodule init
+git submodule update
 ```
+
 Install dependencies.
+
 ```bash
-$ npm install
+npm install
 ```
+
 Then run the tests.
+
 ```bash
-$ npm test
+npm test
 ```
+
 The test suite consists of both unit and integration tests. If a template isn't rendering correctly for you, you can make a test for it by doing the following:
 
   1. Create a template file named `mytest.mustache` in the `test/_files`
@@ -488,16 +498,19 @@ The test suite consists of both unit and integration tests. If a template isn't 
      directory.
 
 Then, you can run the test with:
+
 ```bash
-$ TEST=mytest npm run test-render
+TEST=mytest npm run test-render
 ```
 
 ### Browser tests
 
 Browser tests are not included in `npm test` as they run for too long, although they are ran automatically on Travis when merged into master. Run browser tests locally in any browser:
+
 ```bash
-$ npm run test-browser-local
+npm run test-browser-local
 ```
+
 then point your browser to `http://localhost:8080/__zuul`
 
 ## Who uses mustache.js?
@@ -520,24 +533,24 @@ mustache.js is a mature project, but it continues to actively invite maintainers
 
 mustache.js wouldn't kick ass if it weren't for these fine souls:
 
-  * Chris Wanstrath / defunkt
-  * Alexander Lang / langalex
-  * Sebastian Cohnen / tisba
-  * J Chris Anderson / jchris
-  * Tom Robinson / tlrobinson
-  * Aaron Quint / quirkey
-  * Douglas Crockford
-  * Nikita Vasilyev / NV
-  * Elise Wood / glytch
-  * Damien Mathieu / dmathieu
-  * Jakub Kuźma / qoobaa
-  * Will Leinweber / will
-  * dpree
-  * Jason Smith / jhs
-  * Aaron Gibralter / agibralter
-  * Ross Boucher / boucher
-  * Matt Sanford / mzsanford
-  * Ben Cherry / bcherry
-  * Michael Jackson / mjackson
-  * Phillip Johnsen / phillipj
-  * David da Silva Contín / dasilvacontin
+- Chris Wanstrath / defunkt
+- Alexander Lang / langalex
+- Sebastian Cohnen / tisba
+- J Chris Anderson / jchris
+- Tom Robinson / tlrobinson
+- Aaron Quint / quirkey
+- Douglas Crockford
+- Nikita Vasilyev / NV
+- Elise Wood / glytch
+- Damien Mathieu / dmathieu
+- Jakub Kuźma / qoobaa
+- Will Leinweber / will
+- dpree
+- Jason Smith / jhs
+- Aaron Gibralter / agibralter
+- Ross Boucher / boucher
+- Matt Sanford / mzsanford
+- Ben Cherry / bcherry
+- Michael Jackson / mjackson
+- Phillip Johnsen / phillipj
+- David da Silva Contín / dasilvacontin
