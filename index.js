@@ -1,5 +1,5 @@
 import { typeStr as typeString } from "./lib/type-str.js";
-import { Writer } from "./lib/Writer.js";
+import { Writer } from "./lib/writer.js";
 
 const defaultWriter = new Writer();
 
