@@ -25,5 +25,8 @@ const render = (template, view, partials, config) => {
   return defaultWriter.render(template, view, partials, config);
 };
 
+const clearCache = () => {
+  defaultWriter.clearCache();
+};
 
-export {parse,render};
+export {parse, render, clearCache};
