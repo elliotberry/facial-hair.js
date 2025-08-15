@@ -1,41 +1,44 @@
 import js from '@eslint/js'
-import noSecrets from 'eslint-plugin-no-secrets'
-import packageJson from "eslint-plugin-package-json/configs/recommended";
+
+import { importX } from 'eslint-plugin-import-x'
+import * as nodeDependenciesPlugin from 'eslint-plugin-node-dependencies'
+import packageJson from 'eslint-plugin-package-json'
 import perfectionist from 'eslint-plugin-perfectionist'
-import pluginSecurity from 'eslint-plugin-security'
 import is from 'eslint-plugin-simple-import-sort'
-import sonarjs from "eslint-plugin-sonarjs";
+import sonarjs from 'eslint-plugin-sonarjs'
 import eslintPluginUnicorn from 'eslint-plugin-unicorn'
+
+
 export default [
     eslintPluginUnicorn.configs['flat/recommended'],
-   
     js.configs.recommended,
-    pluginSecurity.configs.recommended,
+    ...nodeDependenciesPlugin.configs['flat/recommended'],
+    config,
     sonarjs.configs.recommended,
-    packageJson,
+    packageJson.configs.recommended,
+    importX.flatConfigs.recommended,
     {
         files: ['**/*.js'],
         languageOptions: {
             ecmaVersion: 2024,
             globals: {
-                clearTimeout: 'readonly',
+                Buffer: 'readonly',
                 console: 'readonly',
-                fetch: 'readonly',
+                "fetch": 'readonly',
                 process: 'readonly',
-                setTimeout: 'readonly',
-                timeOut: 'readonly',
+
             },
             sourceType: 'module',
         },
         plugins: {
-            'no-secrets': noSecrets,
             perfectionist,
-            'simple-import-sort': is
+            'simple-import-sort': is,
         },
 
         rules: {
+            'import-x/default': 'warn',
+            'import-x/namespace': 'warn',
             'no-console': 'off',
-            'no-secrets/no-secrets': 'error',
             'no-unused-vars': 'warn',
             'perfectionist/sort-array-includes': 'warn',
             'perfectionist/sort-classes': 'warn',
@@ -51,13 +54,14 @@ export default [
             'perfectionist/sort-objects': 'warn',
             'simple-import-sort/exports': 'warn',
             'simple-import-sort/imports': 'warn',
+            "sonarjs/no-nested-template-literals": 'warn',
             'unicorn/consistent-function-scoping': 'warn',
             'unicorn/no-array-callback-reference': 'warn',
             'unicorn/no-null': 'warn',
             'unicorn/no-process-exit': 'off',
             'unicorn/prefer-switch': 'off',
             'unicorn/prefer-top-level-await': 'off',
-            'unicorn/prevent-abbreviations': 'warn',
+            'unicorn/prevent-abbreviations': 'warn'
         },
     },
 ]

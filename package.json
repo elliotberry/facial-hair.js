@@ -34,21 +34,19 @@
     "test": "node index.test.js"
   },
   "devDependencies": {
-    "@eslint/js": "^9.21.0",
-    "@release-it/bumper": "^7.0.1",
-    "@stylistic/eslint-plugin-js": "^4.2.0",
-    "eslint": "^9.21.0",
-    "eslint-config-prettier": "^10.0.2",
-    "eslint-plugin-no-secrets": "^2.2.1",
-    "eslint-plugin-package-json": "^0.26.2",
-    "eslint-plugin-perfectionist": "^4.9.0",
-    "eslint-plugin-prettier": "^5.2.3",
-    "eslint-plugin-security": "^3.0.1",
+    "@stylistic/eslint-plugin-js": "^4.4.1",
+    "eslint": "^9.29.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-import-x": "^4.15.2",
+    "eslint-plugin-node-dependencies": "^1.1.2",
+    "eslint-plugin-package-json": "^0.40.2",
+    "eslint-plugin-perfectionist": "^4.15.0",
+    "eslint-plugin-prettier": "^5.5.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
-    "eslint-plugin-sonarjs": "^3.0.2",
-    "eslint-plugin-unicorn": "^57.0.0",
+    "eslint-plugin-sonarjs": "^3.0.3",
+    "eslint-plugin-unicorn": "^59.0.1",
     "prettier": "^3.5.3",
-    "release-it": "^18.1.2"
+    "release-it": "^19.0.3"
   },
   "repository": {
     "type": "git",
