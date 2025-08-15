@@ -1,5 +1,4 @@
 import js from '@eslint/js'
-
 import { importX } from 'eslint-plugin-import-x'
 import * as nodeDependenciesPlugin from 'eslint-plugin-node-dependencies'
 import packageJson from 'eslint-plugin-package-json'
@@ -13,7 +12,6 @@ export default [
     eslintPluginUnicorn.configs['flat/recommended'],
     js.configs.recommended,
     ...nodeDependenciesPlugin.configs['flat/recommended'],
-    config,
     sonarjs.configs.recommended,
     packageJson.configs.recommended,
     importX.flatConfigs.recommended,

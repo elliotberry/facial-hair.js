@@ -2,7 +2,7 @@
 
 # mustache.js - Logic-less {{mustache}} templates with JavaScript
 
-a zero-dependency implementation of the [mustache](http://mustache.github.io/) template system in Node. This was almost entirely done by other people, I just refactored it.
+a zero-dependency implementation of the [mustache](http://mustache.github.io/) template system in Node. This was almost entirely done by other people, I just refactored it and made it worse.
 
 ## Usage
 
