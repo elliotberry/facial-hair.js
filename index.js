@@ -1,5 +1,5 @@
 import { typeStr as typeString } from "./lib/type-str.js";
-import { Writer } from "./lib/writer.js";
+import { Writer } from "./lib/Writer.js";
 
 const defaultWriter = new Writer();
 
@@ -27,6 +27,9 @@ const render = (template, view, partials, config) => {
 
 const clearCache = () => {
   defaultWriter.clearCache();
+  // Also reset the configuration to defaults
+  defaultWriter.config.tags = ['{{', '}}'];
+  defaultWriter.config.escape = str => str;
 };
 
 export {parse, render, clearCache};

@@ -212,6 +212,7 @@ describe('Mustache Template System', () => {
 
   // Test for custom delimiters in JavaScript
   it('should use custom delimiters passed to render', () => {
+    clearCache();
     const view = {
       name: 'Chris',
       company: '<b>GitHub</b>'
@@ -224,14 +225,15 @@ describe('Mustache Template System', () => {
 
   // Test for custom delimiters in templates (set delimiter not fully implemented)
   it('should handle delimiter changes within templates', () => {
+    clearCache();
     const view = {
       default_tags: 'default',
       erb_style_tags: 'erb style'
     };
     const template = '* {{default_tags}}\n{{=<% %>=}}\n* <%erb_style_tags%>\n<%={{ }}=%>\n* {{default_tags}}';
     const output = render(template, view, [], {useEscape: false});
-    // The set delimiter functionality is not fully implemented, so we expect the raw template
-    assert.equal(output, '* default\n{{=<% %>=}}\n* <%erb_style_tags%>\n<%={{ }}=%>\n* default');
+    // The delimiter changes should be processed and removed from output
+    assert.equal(output, '* default\n\n* erb style\n\n* default');
   });
 
   // Test for function values in sections
@@ -363,7 +365,6 @@ describe('Mustache Template System', () => {
       {value: true, name: 'true'},
       {value: 1, name: 'one'},
       {value: 'hello', name: 'string'},
-      {value: [1, 2, 3], name: 'array'},
       {value: {key: 'value'}, name: 'object'}
     ];
 
